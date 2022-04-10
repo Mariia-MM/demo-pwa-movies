@@ -39,7 +39,16 @@
             </div>
             <div class="block">
                 <ul>
-                    <li :ref="'movie-'+ movie.id" v-for="movie in movies">{{movie.name}} <button class="delete" @click="deleteMovie(movie.id)"></button></li>
+                    <li :ref="'movie-'+ movie.id" v-for="movie in movies">
+                        <input v-if="editableMovies == movie.id" v-model="editName" class="input" type="text" placeholder="Movie name">
+                        <span v-else>{{movie.name}}</span>
+                         - 
+                         <input v-if="editableMovies == movie.id" v-model="editDuration" class="input" type="number" placeholder="Duration">
+                         <span v-else>{{movie.duration}}</span> min |
+                        <button  class="button" v-if="editableMovies!= movie.id" :disabled="isLoading" @click="editShowMovie(movie.id)">Edit Movie</button>
+                        <button  class="button" v-else :disabled="isLoading" @click="editMovie(movie.id)">Save Movie</button>
+                        <button :disabled="isLoading" class="delete" @click="deleteMovie(movie.id)"></button>
+                    </li>
                 </ul>
             </div>
     
