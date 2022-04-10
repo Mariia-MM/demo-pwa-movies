@@ -17,24 +17,29 @@
         <main id="app">
             <div class="block">
                 <h1 class="title is-center">Movies</h1>
-                <button class="button">Add</button>
+                <button class="button" @click="showFormAdd = !showFormAdd">Add</button>
             </div>
-            <div class="block">
+            <div class="block" v-if="showFormAdd">
                 <form >
                     <h2 class="subtitle">New</h2>
                     <div class="field">
                         <div class="control">
-                            <input class="input" type="text" placeholder=" Movie name">
+                            <input v-model="newName" class="input" type="text" placeholder=" Movie name">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input v-model="newDuration" class="input" type="number" placeholder="Duration">
                         </div>
                     </div>
                     <div class="control">
-                        <button class="button is-primary">Save</button>
+                        <button class="button is-primary" @click.prevent="addMovie">Save</button>
                     </div>
                 </form>
             </div>
             <div class="block">
                 <ul>
-                    <li v-for="movie in movies">{{movie.name}} <button class="delete"></button></li>
+                    <li :ref="'movie-'+ movie.id" v-for="movie in movies">{{movie.name}} <button class="delete" @click="deleteMovie(movie.id)"></button></li>
                 </ul>
             </div>
     
