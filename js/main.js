@@ -10,6 +10,8 @@ Vue.createApp({
       return {
         movies : [],
         APIUrl: 'https://oftrsftmxfjpplfedzfl.supabase.co/rest/v1/Movies',
+        UrlMovieAPI : 'http://www.omdbapi.com/?i=tt3896198&apikey=3106ae56&s=man',
+        moviesFromAPI : [],
         showFormAdd : false,
         newName : '',
         newDuration : '',
@@ -81,7 +83,25 @@ Vue.createApp({
                 });
                 this.getMovies();
                 this.isLoading=false;
-
+        },
+        getMoviesFromAPI : async function(){
+            const myFetch = await fetch(this.UrlMovieAPI);
+            const jsonData = await myFetch.json();
+            this.moviesFromAPI = jsonData.Search;
+            console.log(this.moviesFromAPI);  
+            this.pushMoviesIntoBD();          
+        },
+        pushMoviesIntoBD : function(){
+            this.moviesFromAPI.forEach((movie) => {
+                //console.log(movie.Title);
+                fetch (this.APIUrl,
+                    {
+                        headers:headers,
+                        method:'POST',
+                        body: JSON.stringify({"name":movie.Title, "duration" : 60})
+                    })
+                
+            });
         },
     },
     watch : {
@@ -96,6 +116,8 @@ Vue.createApp({
     },
     mounted: function() {
         this.getMovies();
+        this.getMoviesFromAPI();
+        
     },
 
   }).mount('#app')

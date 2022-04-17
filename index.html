@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>demo pwa Movies</title>
+    <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="CSS/nprogress.css">
     <script src="https://unpkg.com/vue@3"></script>
@@ -16,6 +17,30 @@
     <div class="container">
         <main id="app">
             <div class="block">
+                <table width="100%">
+                    <tr>
+                        <th>Name</th>
+                        <th>Duration</th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr v-for="movie in movies">
+                        <th> 
+                            <input v-if="editableMovies == movie.id" v-model="editName" class="input" type="text" placeholder="Movie name">
+                            <span v-else>{{movie.name}}</span>
+                        </th>
+                        <th>
+                            <input v-if="editableMovies == movie.id" v-model="editDuration" class="input" type="number" placeholder="Duration">
+                            <span v-else>{{movie.duration}}</span> min 
+                        </th>
+                        <th>
+                            <button  class="button" v-if="editableMovies!= movie.id" :disabled="isLoading" @click="editShowMovie(movie.id)">Edit Movie</button>
+                        <button  class="button" v-else :disabled="isLoading" @click="editMovie(movie.id)">Save Movie</button>
+                        <button :disabled="isLoading" class="delete" @click="deleteMovie(movie.id)"></button>
+                    
+                        </th>
+                    </tr>
+
+                </table>
                 <h1 class="title is-center">Movies</h1>
                 <button class="button" @click="showFormAdd = !showFormAdd">Add</button>
             </div>
@@ -38,18 +63,7 @@
                 </form>
             </div>
             <div class="block">
-                <ul>
-                    <li :ref="'movie-'+ movie.id" v-for="movie in movies">
-                        <input v-if="editableMovies == movie.id" v-model="editName" class="input" type="text" placeholder="Movie name">
-                        <span v-else>{{movie.name}}</span>
-                         - 
-                         <input v-if="editableMovies == movie.id" v-model="editDuration" class="input" type="number" placeholder="Duration">
-                         <span v-else>{{movie.duration}}</span> min |
-                        <button  class="button" v-if="editableMovies!= movie.id" :disabled="isLoading" @click="editShowMovie(movie.id)">Edit Movie</button>
-                        <button  class="button" v-else :disabled="isLoading" @click="editMovie(movie.id)">Save Movie</button>
-                        <button :disabled="isLoading" class="delete" @click="deleteMovie(movie.id)"></button>
-                    </li>
-                </ul>
+                
             </div>
     
         </main>
