@@ -4,13 +4,13 @@
   "theme_color": "#e5d5c2",
   "icons": [
     {
-      "src": "icon192x192.png",
+      "src": "img/icon192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable any"
     },
     {
-      "src": "icon512X512.png",
+      "src": "img/icon512X512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable any"
