@@ -8,6 +8,7 @@
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="img/icon192x192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="CSS/main.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="stylesheet" href="CSS/nprogress.css">
     <script src="https://unpkg.com/vue@3"></script>
@@ -18,31 +19,7 @@
 <body>
     <div class="container">
         <main id="app">
-            <div class="block">
-                <table width="100%">
-                    <tr>
-                        <th>Name</th>
-                        <th>Duration</th>
-                        <th>Actions</th>
-                    </tr>
-                    <tr v-for="movie in movies">
-                        <th> 
-                            <input v-if="editableMovies == movie.id" v-model="editName" class="input" type="text" placeholder="Movie name">
-                            <span v-else>{{movie.name}}</span>
-                        </th>
-                        <th>
-                            <input v-if="editableMovies == movie.id" v-model="editDuration" class="input" type="number" placeholder="Duration">
-                            <span v-else>{{movie.duration}}</span> min 
-                        </th>
-                        <th>
-                            <button  class="button" v-if="editableMovies!= movie.id" :disabled="isLoading" @click="editShowMovie(movie.id)">Edit Movie</button>
-                        <button  class="button" v-else :disabled="isLoading" @click="editMovie(movie.id)">Save Movie</button>
-                        <button :disabled="isLoading" class="delete" @click="deleteMovie(movie.id)"></button>
-                    
-                        </th>
-                    </tr>
-
-                </table>
+            <div class="block">                
                 <h1 class="title is-center">Movies</h1>
                 <button class="button" @click="showFormAdd = !showFormAdd">Add</button>
             </div>
@@ -65,7 +42,34 @@
                 </form>
             </div>
             <div class="block">
-                
+                <table width="100%">
+                    <tr>
+                        <th>Name</th>
+                        <th>Duration</th>
+                        <th>Actions</th>
+                    </tr>
+                    <tr v-for="movie in movies" :class="{'desenfoque' : isLoading}">
+                        <td> 
+                            <input v-if="editableMovies == movie.id" v-model="editName" class="input" type="text" placeholder="Movie name">
+                            <span v-else>{{movie.name}}</span>
+                        </td>
+                        <td>
+                            <input v-if="editableMovies == movie.id" v-model="editDuration" class="input" type="number" placeholder="Duration">
+                            <span v-else>{{movie.duration}}</span> min 
+                        </td>
+                        <td>
+                            <button  class="button" v-if="editableMovies!= movie.id" :disabled="isLoading" @click="editShowMovie(movie.id)">Edit Movie</button>
+                        <button  class="button" v-else :disabled="isLoading" @click="editMovie(movie.id)">Save Movie</button>
+                        <button :disabled="isLoading" class="delete" @click="deleteMovie(movie.id)"></button>
+                    
+                        </td>
+                    </tr>
+                </table>                
+            </div>
+            <div class="bloc">
+                <button class="button" @click="page=page - 1" v-if="page > 1">Previous</button>
+                <button class="button" @click="page=page + 1">Next</button>
+
             </div>
     
         </main>

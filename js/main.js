@@ -2,6 +2,7 @@ const headers = {
     'content-type': 'application/json',
     'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9mdHJzZnRteGZqcHBsZmVkemZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDk1OTc1NTYsImV4cCI6MTk2NTE3MzU1Nn0.AdxgEjqg0TpHyEO27ocvWi7m3fXdtT_fOiI8eXSB5IQ',
     'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9mdHJzZnRteGZqcHBsZmVkemZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDk1OTc1NTYsImV4cCI6MTk2NTE3MzU1Nn0.AdxgEjqg0TpHyEO27ocvWi7m3fXdtT_fOiI8eXSB5IQ',
+    
 };
 
 
@@ -18,14 +19,15 @@ Vue.createApp({
         isLoading: false,
         editableMovies : -1,
         editName : '',
-        editDuration : ''
-
+        editDuration : '',
+        resultsNumberOnPage : 5,
+        page : 1        
       }
     },
     methods: {
         getMovies: async function () {
            this.isLoading = true;
-           const fetchMovies = await fetch(`${this.APIUrl}?select=*`,{headers});
+           const fetchMovies = await fetch(`${this.APIUrl}?select=*`,{headers: this.getHeaders()});
            this.movies = await fetchMovies.json();
            this.isLoading = false;           
         },
@@ -36,7 +38,7 @@ Vue.createApp({
             //add new movie to dataBase
             const fetchMovies = await fetch(this.APIUrl,
                 {
-                    headers:headers,
+                    headers: this.getHeaders(),
                     method: 'POST',
                     body : JSON.stringify({"name":this.newName, "duration" : this.newDuration})
                 });
@@ -55,7 +57,7 @@ Vue.createApp({
             // delete from data base
             const fetchMovies = await fetch(`${this.APIUrl}?id=eq.${id}`,
                 {
-                    headers:headers,
+                    headers: this.getHeaders(),
                     method: 'DELETE'
                 });
 
@@ -77,7 +79,7 @@ Vue.createApp({
             this.editableMovies = -1;
             const fetchMovies = await fetch(`${this.APIUrl}?id=eq.${id}`,
                 {
-                    headers:headers,
+                    headers: this.getHeaders(),
                     method: 'PATCH',
                     body : JSON.stringify({"name":this.editName, "duration" : this.editDuration})
                 });
@@ -96,12 +98,22 @@ Vue.createApp({
                 //console.log(movie.Title);
                 fetch (this.APIUrl,
                     {
-                        headers:headers,
+                        headers: this.getHeaders(),
                         method:'POST',
                         body: JSON.stringify({"name":movie.Title, "duration" : 60})
                     })
                 
             });
+        },
+        getHeaders() {
+            const rangeStart=(this.page - 1) * this.resultsNumberOnPage;
+            const rangeFinish = rangeStart + this.resultsNumberOnPage;
+            
+            //clone headers
+            let headersNewRange = JSON.parse(JSON.stringify(headers));
+            //modifying the range
+            headersNewRange.Range = `${rangeStart}-${rangeFinish}`;            
+            return headersNewRange;
         },
     },
     watch : {
@@ -111,6 +123,9 @@ Vue.createApp({
             } else {
                 NProgress.done();
             }
+        },
+        page(value){
+            this.getMovies();
         }
 
     },
