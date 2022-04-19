@@ -67,8 +67,20 @@
                 </table>                
             </div>
             <div class="bloc">
-                <button class="button" @click="page=page - 1" v-if="page > 1">Previous</button>
-                <button class="button" @click="page=page + 1">Next</button>
+                <button 
+                    v-if="page > 1"
+                    :disabled="isLoading" 
+                    @click="page=page - 1" 
+                    class="button"
+                >Previous
+                </button>
+                <button
+                v-if="page < getMaxPage"
+                    :disabled="isLoading" 
+                    @click="page=page + 1"
+                    class="button" 
+                >Next
+                </button>
 
             </div>
     

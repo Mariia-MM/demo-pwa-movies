@@ -17,12 +17,18 @@ Vue.createApp({
         newName : '',
         newDuration : '',
         isLoading: false,
+        moviesLength:0,
         editableMovies : -1,
         editName : '',
         editDuration : '',
         resultsNumberOnPage : 5,
         page : 1        
       }
+    },
+    computed:{
+        getMaxPage(){
+            return Math.ceil(this.moviesLength/this.resultsNumberOnPage);
+        }
     },
     methods: {
         getMovies: async function () {
@@ -115,6 +121,16 @@ Vue.createApp({
             headersNewRange.Range = `${rangeStart}-${rangeFinish}`;            
             return headersNewRange;
         },
+        async getMoviesLength (){
+            //get headers without changing range for paging
+            const myHeaders = this.getHeaders();
+            myHeaders.Range='';
+            // get the list of all movies tor to get the quantity
+            const fetchMovies = await fetch(`${this.APIUrl}?select=*`,{headers: myHeaders});
+            const dataMovies = await fetchMovies.json();
+            this.moviesLength=Math.ceil(dataMovies.length/this.resultsNumberOnPage);
+
+        },
     },
     watch : {
         isLoading(value){
@@ -131,7 +147,8 @@ Vue.createApp({
     },
     mounted: function() {
         this.getMovies();
-        this.getMoviesFromAPI();
+        
+        this.getMoviesLength();
         
     },
 
