@@ -2,7 +2,7 @@ const headers = {
     'content-type': 'application/json',
     'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9mdHJzZnRteGZqcHBsZmVkemZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDk1OTc1NTYsImV4cCI6MTk2NTE3MzU1Nn0.AdxgEjqg0TpHyEO27ocvWi7m3fXdtT_fOiI8eXSB5IQ',
     'authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9mdHJzZnRteGZqcHBsZmVkemZsIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NDk1OTc1NTYsImV4cCI6MTk2NTE3MzU1Nn0.AdxgEjqg0TpHyEO27ocvWi7m3fXdtT_fOiI8eXSB5IQ',
-    
+    'Range': '0-9'
 };
 
 
@@ -11,7 +11,7 @@ Vue.createApp({
       return {
         movies : [],
         APIUrl: 'https://oftrsftmxfjpplfedzfl.supabase.co/rest/v1/Movies',
-        UrlMovieAPI : 'http://www.omdbapi.com/?i=tt3896198&apikey=3106ae56&s=man',
+        UrlMovieAPI : 'https://www.omdbapi.com/?i=tt3896198&apikey=3106ae56&s=man',
         moviesFromAPI : [],
         showFormAdd : false,
         newName : '',
