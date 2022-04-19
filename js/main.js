@@ -57,15 +57,17 @@ Vue.createApp({
             this.isLoading = false;
         },
         deleteMovie : async function (id){
-            // delete visual
-            this.$refs[`movie-${id}`][0].remove();
+            // // delete visual
+            // this.$refs[`movie-${id}`][0].remove();
 
             // delete from data base
-            const fetchMovies = await fetch(`${this.APIUrl}?id=eq.${id}`,
+            await fetch(`${this.APIUrl}?id=eq.${id}`,
                 {
                     headers: this.getHeaders(),
                     method: 'DELETE'
-                });
+                }
+                );
+                this.getMovies();
 
         },
         editShowMovie: function(id){
@@ -142,12 +144,12 @@ Vue.createApp({
         },
         page(value){
             this.getMovies();
+            this.getMoviesLength();
         }
 
     },
     mounted: function() {
-        this.getMovies();
-        
+        this.getMovies();        
         this.getMoviesLength();
         
     },
